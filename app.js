@@ -1,4 +1,4 @@
-/* Storyboard Styles · WPP AI
+/* Storyboard Styles · WPP Production
    Static, dependency-free. Hash routing (# for the index, #<slug> for a style) so it runs on GitHub Pages as is. */
 (function () {
   "use strict";
@@ -41,19 +41,19 @@
   }
 
   /* ---------- header ---------- */
-  var LOGO = '<a class="logo" href="#" aria-label="WPP, back to all styles"><img src="assets/wpp-logo.svg" alt="WPP"></a>';
-  var MENU = '<button class="menu" type="button" id="menu-btn" aria-label="Open index" aria-haspopup="dialog"><span></span><span></span></button>';
+  var LOGO = '<a class="logo" href="#" aria-label="WPP Production, back to all styles"><img src="assets/wpp-production-logo.svg" alt="WPP Production"></a>';
   var TITLE = '<a href="#" class="title-link"><h1 class="title">Storyboard<br>Styles</h1></a>';
 
   function headerIndex() {
     header.innerHTML =
-      '<div class="cell split">' + TITLE + '<p class="micro muted intro">Choose the look<br>of your boards.</p></div>' +
-      '<div class="cell split"><span class="micro muted hide-m">' + TOTAL + " styles · " + TOTAL * 4 + ' frames</span>' + LOGO + '</div>' +
-      '<div class="cell"></div>' +
-      '<div class="cell split br">' + MENU +
-        '<p class="micro intro intro-wide">' + WORDS[TOTAL] + ' visual languages for storyboards, animatics and key art. Every style is drawn on the same two scenes, so the treatment is the only variable.</p>' +
+      '<div class="cell split span2 h-brand">' +
+        '<a class="logo logo-home" href="#" aria-label="WPP Production"><img src="assets/wpp-production-logo.svg" alt="WPP Production"></a>' +
+        '<h1 class="h-title">Storyboard Styles</h1>' +
+      '</div>' +
+      '<div class="cell tr hide-m"><span class="micro muted">' + TOTAL + " styles · " + TOTAL * 4 + ' frames</span></div>' +
+      '<div class="cell br h-desc">' +
+        '<p class="micro intro intro-wide">' + WORDS[TOTAL] + ' visual languages for storyboards, animatics and key art. Choose the look of your boards.</p>' +
       '</div>';
-    $("#menu-btn").addEventListener("click", openIndex);
   }
 
   function headerDetail(i) {
@@ -62,10 +62,9 @@
       '<div class="cell split">' + TITLE + '<a class="micro link" href="#">← All styles</a></div>' +
       '<div class="cell split"><span class="micro muted hide-m">' + esc(STYLES[i].family) + '</span>' + LOGO + '</div>' +
       '<div class="cell tr"><span class="micro" style="font-variant-numeric:tabular-nums">' + pad(i + 1) + " / " + pad(TOTAL) + '</span></div>' +
-      '<div class="cell split br">' + MENU +
+      '<div class="cell br">' +
         '<span class="micro"><a class="link" href="' + href(prev) + '" aria-label="Previous style: ' + esc(prev.name) + '">Previous</a>&nbsp;&nbsp;&nbsp;<a class="link" href="' + href(next) + '" aria-label="Next style: ' + esc(next.name) + '">Next</a></span>' +
       '</div>';
-    $("#menu-btn").addEventListener("click", openIndex);
   }
 
   /* ---------- index view ---------- */
@@ -98,51 +97,56 @@
   var TAKES = { A: 1, B: 1, C: 2, D: 1 };
 
   function renderIndex() {
-    document.title = "Storyboard Styles · WPP AI";
+    document.title = "Storyboard Styles · WPP Production";
     headerIndex();
-    var html = '<section class="grid rows" aria-label="Styles">', i = 0, k = 0;
-    while (i < TOTAL) {
-      var t = SEQ[k % SEQ.length];
-      if (t === "C" && i === TOTAL - 1) t = "A";
-      html += T[t](i); i += TAKES[t]; k++;
+    var rows = STYLES.map(function (s, n) {
+      return '<li><a class="hrow" href="' + href(s) + '" data-n="' + n + '">' +
+        '<span class="hthumb frame" aria-hidden="true">' + img(s, "car", 1, "", "") + '</span>' +
+        '<span class="micro muted hnum">' + pad(n + 1) + '</span>' +
+        '<span class="hname">' + esc(s.name) + '</span>' +
+        '<span class="micro muted hfam">' + esc(s.family) + '</span>' +
+      '</a></li>';
+    }).join("");
+    var first = STYLES[0];
+    view.innerHTML =
+      '<section class="home grid" aria-label="Styles">' +
+        '<div class="cell span2 hlist-cell"><ol class="hlist">' + rows + '</ol></div>' +
+        '<div class="cell span2 hpeek-cell" aria-hidden="true">' +
+          '<div class="hpeek">' +
+            '<div class="frame natural hpeek-frame"><img id="hpeek-img" src="' + src(first, "car", 1) + '" alt=""></div>' +
+            '<div class="hpeek-cap">' +
+              '<div><span class="micro muted" id="hpeek-fam">' + pad(1) + " · " + esc(first.family) + '</span>' +
+              '<p class="hpeek-name" id="hpeek-name">' + esc(first.name) + '</p>' +
+              '<p class="micro hpeek-desc" id="hpeek-desc">' + esc(first.description) + '</p></div>' +
+              '<a class="micro link" id="hpeek-go" href="' + href(first) + '">View style →</a>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</section>';
+    wireHome();
+  }
+
+  function wireHome() {
+    var im = $("#hpeek-img"), cur = 0;
+    function show(n) {
+      if (n === cur) return; cur = n;
+      var s = STYLES[n];
+      $$(".hrow").forEach(function (r) { r.classList.toggle("on", +r.dataset.n === n); });
+      im.classList.add("swap");
+      var next = new Image(); next.src = src(s, "car", 1);
+      var done = function () { im.src = next.src; requestAnimationFrame(function () { im.classList.remove("swap"); }); };
+      if (next.complete) setTimeout(done, 120); else next.onload = function () { setTimeout(done, 60); };
+      $("#hpeek-fam").textContent = pad(n + 1) + " · " + s.family;
+      $("#hpeek-name").textContent = s.name;
+      $("#hpeek-desc").textContent = s.description;
+      $("#hpeek-go").setAttribute("href", href(s));
+      preload(s);
     }
-    html += "</section>";
-
-    html += '<section class="mlist" aria-label="Styles">' + STYLES.map(function (s, n) {
-      return '<a class="mitem" href="' + href(s) + '">' +
-        '<div class="frame">' + img(s, state.scene, 1, "", "") + '</div>' +
-        '<div class="mrow"><div><span class="micro num" style="display:block">' + pad(n + 1) + '</span><h2 class="name">' + esc(s.name) + '</h2><span class="micro fam" style="display:block">' + esc(s.family) + '</span></div>' +
-        '<span class="micro">View →</span></div></a>';
-    }).join("") + "</section>";
-
-    view.innerHTML = html;
-    wireItems();
-  }
-
-  function wireItems() {
-    var cells = $$(".rows .item");
-    cells.forEach(function (c) {
-      var id = c.dataset.item, group = function () { return $$('.rows .item[data-item="' + id + '"]'); };
-      c.addEventListener("mouseenter", function () { group().forEach(function (g) { g.classList.add("is-hover"); }); preload(STYLES[id]); });
-      c.addEventListener("mouseleave", function () { group().forEach(function (g) { g.classList.remove("is-hover"); }); });
-      if (c.tagName !== "A") c.addEventListener("click", function () { location.hash = href(STYLES[id]); });
+    $$(".hrow").forEach(function (r) {
+      r.addEventListener("mouseenter", function () { show(+r.dataset.n); });
+      r.addEventListener("focus", function () { show(+r.dataset.n); });
     });
-  }
-
-  function swapScenes() {
-    var imgs = $$(".rows .item[data-which] img, .mlist img");
-    imgs.forEach(function (im) { im.classList.add("swap"); });
-    setTimeout(function () {
-      $$(".rows .item[data-which]").forEach(function (c) {
-        var s = STYLES[c.dataset.item], sc = c.dataset.which === "primary" ? state.scene : other(state.scene);
-        var im = $("img", c); im.src = src(s, sc, 1);
-      });
-      $$(".mlist .mitem").forEach(function (a, n) { $("img", a).src = src(STYLES[n], state.scene, 1); });
-      imgs.forEach(function (im) {
-        var show = function () { im.classList.remove("swap"); };
-        if (im.complete) requestAnimationFrame(show); else { im.onload = show; im.onerror = show; }
-      });
-    }, 320);
+    var firstRow = $(".hrow"); if (firstRow) firstRow.classList.add("on");
   }
 
   /* ---------- detail view ---------- */
@@ -257,31 +261,6 @@
     } else { toast(url); }
   }
 
-  /* ---------- index overlay ---------- */
-  var idx = $("#index"), lastFocus = null;
-  function buildIndexList() {
-    $("#index-list").innerHTML = STYLES.map(function (s, n) {
-      return '<li><a href="' + href(s) + '" data-n="' + n + '"><span class="micro muted">' + pad(n + 1) + '</span><span class="iname">' + esc(s.name) + '</span><span class="micro muted">' + esc(s.family) + '</span></a></li>';
-    }).join("");
-    var peek = $("#index-peek");
-    $$("#index-list a").forEach(function (a) {
-      var show = function () { var s = STYLES[a.dataset.n]; peek.classList.remove("on"); peek.onload = function () { peek.classList.add("on"); }; peek.src = src(s, state.scene, 1); peek.alt = ""; };
-      a.addEventListener("mouseenter", show);
-      a.addEventListener("focus", show);
-      a.addEventListener("click", closeIndex);
-    });
-  }
-  function openIndex() {
-    lastFocus = document.activeElement;
-    idx.hidden = false; document.body.style.overflow = "hidden";
-    $("#index-list a").focus();
-  }
-  function closeIndex() {
-    idx.hidden = true; document.body.style.overflow = "";
-    if (lastFocus && document.contains(lastFocus)) lastFocus.focus();
-  }
-  $("#index-close").addEventListener("click", closeIndex);
-
   /* ---------- lightbox ---------- */
   var lb = $("#lightbox");
   function openLightbox(styleIdx, frame) {
@@ -317,7 +296,6 @@
       else if (e.key === "ArrowLeft") stepLightbox(-1);
       return;
     }
-    if (!idx.hidden) { if (e.key === "Escape") closeIndex(); return; }
     var m = location.hash.match(/^#(.+)$/);
     if (m) {
       var i = indexOf(decodeURIComponent(m[1]));
@@ -334,6 +312,7 @@
     var i = m ? indexOf(decodeURIComponent(m[1])) : -1;
     if (lastRoute === "index") indexScroll = window.scrollY;
     document.body.classList.toggle("is-detail", i > -1);
+    document.body.classList.toggle("home-page", i === -1);
     if (i > -1) {
       if (lastRoute !== STYLES[i].slug) state.frame = 0;
       renderDetail(i); lastRoute = STYLES[i].slug;
@@ -347,7 +326,6 @@
   }
 
   $("#foot-count").textContent = TOTAL + " styles · " + TOTAL * 4 + " frames";
-  buildIndexList();
   window.addEventListener("hashchange", route);
   route();
 })();
