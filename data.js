@@ -64,6 +64,48 @@ window.STYLES = [
     name: "Clean Fine-Line Greyscale",
     family: "Greyscale",
     description: "Light, precise pencil line with minimal tone. Quiet clarity for early boards."
+  },
+  {
+    slug: "crisp-greyscale-line-and-fill-storyboard",
+    name: "Crisp Greyscale Line-and-Fill Storyboard",
+    family: "Greyscale",
+    frames: 2,
+    description: "Clean outlines over flat grey fills. Graphic, legible boards that read at a glance."
+  },
+  {
+    slug: "soft-pencil-tonal-realism",
+    name: "Soft-Pencil Tonal Realism",
+    family: "Greyscale",
+    frames: 2,
+    description: "Gentle graphite shading and soft edges. Quiet, naturalistic realism with a hand-drawn warmth."
+  },
+  {
+    slug: "tonal-graphite-and-charcoal-storyboard",
+    name: "Tonal Graphite-and-Charcoal Storyboard",
+    family: "Greyscale",
+    frames: 2,
+    description: "Rich charcoal darks and smudged graphite midtones. Atmospheric, full-value drawing."
+  },
+  {
+    slug: "kinetic-greyscale-character-realism",
+    name: "Kinetic Greyscale Character Realism",
+    family: "Greyscale",
+    frames: 2,
+    description: "Energetic hatching and directional strokes on realistic forms. Drawing with movement in it."
+  },
+  {
+    slug: "bold-brush-ink-grey-wash-storyboard",
+    name: "Bold Brush-Ink Grey-Wash Storyboard",
+    family: "Greyscale",
+    frames: 2,
+    description: "Confident brush-ink line with loose grey washes. Expressive, classic storyboard drawing."
+  },
+  {
+    slug: "loose-greyscale-pen-and-marker-sketch",
+    name: "Loose Greyscale Pen-and-Marker Sketch",
+    family: "Greyscale",
+    frames: 2,
+    description: "Quick pen line and marker tone. Fast, gestural sketches for early exploration."
   }
 ];
 

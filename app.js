@@ -11,6 +11,14 @@
     { scene: "kid", n: 1 }, { scene: "kid", n: 2 }
   ];
   var LETTER = ["A", "B"];
+  var FRAMES_2 = [{ scene: "car", n: 1 }, { scene: "kid", n: 1 }];
+  function framesOf(style) { return style.frames === 2 ? FRAMES_2 : FRAMES; }
+  function matchFrame(style, f) {
+    var fs = framesOf(style), k;
+    for (k = 0; k < fs.length; k++) if (fs[k].scene === f.scene && fs[k].n === f.n) return k;
+    for (k = 0; k < fs.length; k++) if (fs[k].scene === f.scene) return k;
+    return 0;
+  }
 
   var state = { scene: "car", frame: 0, compare: null, lbList: [], lbIndex: 0 };
   var $ = function (s, r) { return (r || document).querySelector(s); };
@@ -18,7 +26,8 @@
 
   var header = $("#header"), view = $("#view");
   var TOTAL = STYLES.length;
-  var WORDS = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve"];
+  var WORDS = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen", "Twenty"];
+  var FRAME_TOTAL = STYLES.reduce(function (t, st) { return t + framesOf(st).length; }, 0);
 
   /* ---------- helpers ---------- */
   function esc(t) { return String(t).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
@@ -34,7 +43,7 @@
   function img(style, scene, n, cls, alt) {
     return '<img ' + (cls ? 'class="' + cls + '" ' : "") + 'src="' + src(style, scene, n) + '" alt="' + esc(alt == null ? style.name + ", " + SCENES[scene] + " scene" : alt) + '" loading="lazy" decoding="async" width="1088" height="608">';
   }
-  function preload(style) { FRAMES.forEach(function (f) { var i = new Image(); i.src = src(style, f.scene, f.n); }); }
+  function preload(style) { framesOf(style).forEach(function (f) { var i = new Image(); i.src = src(style, f.scene, f.n); }); }
   function toast(msg) {
     var t = $("#toast"); t.textContent = msg; t.hidden = false;
     clearTimeout(toast._t); toast._t = setTimeout(function () { t.hidden = true; }, 1800);
@@ -50,7 +59,7 @@
         '<a class="logo logo-home" href="#" aria-label="WPP Production"><img src="assets/wpp-production-logo.svg" alt="WPP Production"></a>' +
         '<h1 class="h-title">Storyboard Styles</h1>' +
       '</div>' +
-      '<div class="cell tr hide-m"><span class="micro muted">' + TOTAL + " styles · " + TOTAL * 4 + ' frames</span></div>' +
+      '<div class="cell tr hide-m"><span class="micro muted">' + TOTAL + " styles · " + FRAME_TOTAL + ' frames</span></div>' +
       '<div class="cell br h-desc">' +
         '<p class="micro intro intro-wide">' + WORDS[TOTAL] + ' visual languages for storyboards, animatics and key art. Choose the look of your boards.</p>' +
       '</div>';
@@ -83,7 +92,7 @@
       '<div class="frame ' + (kind === "wide" ? "wide" : "natural") + '">' + img(s, scene, 1, "", "") + '</div></div>';
   }
   function meta(s, i) {
-    return '<div class="cell br item" data-item="' + i + '" aria-hidden="true"><span class="micro muted">4 frames</span><span class="micro link meta-cta" style="margin-top:4px">View style →</span></div>';
+    return '<div class="cell br item" data-item="' + i + '" aria-hidden="true"><span class="micro muted">' + framesOf(s).length + ' frames</span><span class="micro link meta-cta" style="margin-top:4px">View style →</span></div>';
   }
   var T = {
     A: function (i) { var s = STYLES[i]; return label(s, i, "tl", false) + pic(s, i, "wide", "primary") + meta(s, i); },
@@ -157,8 +166,9 @@
     preload(s);
     if (state.compare && state.compare === s.slug) state.compare = null;
 
-    var thumbs = FRAMES.map(function (f, n) {
-      return '<button type="button" class="cell tl thumb" data-frame="' + n + '" aria-current="' + (n === state.frame) + '" aria-label="Show ' + frameLabel(f) + '">' +
+    var FS = framesOf(s);
+    var thumbs = FS.map(function (f, n) {
+      return '<button type="button" class="cell tl thumb' + (FS.length === 2 ? " span2" : "") + '" data-frame="' + n + '" aria-current="' + (n === state.frame) + '" aria-label="Show ' + frameLabel(f) + '">' +
         '<div class="frame natural">' + img(s, f.scene, f.n, "", "") + '</div>' +
         '<div class="bar"></div>' +
         '<div class="tcap micro"><span>' + frameLabel(f) + '</span><span>' + pad(n + 1) + '</span></div>' +
@@ -176,10 +186,10 @@
           '<span class="micro muted">' + pad(i + 1) + " · " + esc(s.family) + '</span>' +
           '<div><h2 class="d-name">' + esc(s.name) + '</h2><p class="d-desc">' + esc(s.description) + '</p></div>' +
         '</div>' +
-        '<div class="cell bl hide-m"><span class="micro muted">Two scenes, two takes each.<br>Use ← → to step through frames.</span></div>' +
+        '<div class="cell bl hide-m"><span class="micro muted">' + (FS.length === 2 ? "Two scenes, one take each." : "Two scenes, two takes each.") + '<br>Use ← → to step through frames.</span></div>' +
         '<div class="cell split br hide-m">' +
           '<button type="button" class="micro link" id="copy">Copy link</button>' +
-          '<span class="micro muted">4 frames</span>' +
+          '<span class="micro muted">' + FS.length + ' frames</span>' +
         '</div>' +
         '<div class="cell stage-row">' +
           '<div class="stage" id="stage"></div>' +
@@ -224,7 +234,7 @@
 
   function pane(s, f, idx, isMain) {
     return '<figure class="pane">' +
-      '<div class="frame natural" data-open="' + idx + '" data-slug="' + s.slug + '" role="button" tabindex="0" aria-label="Open ' + esc(s.name) + ' full screen">' +
+      '<div class="frame natural" data-open="' + idx + '" data-fr="' + matchFrame(s, f) + '" data-slug="' + s.slug + '" role="button" tabindex="0" aria-label="Open ' + esc(s.name) + ' full screen">' +
         img(s, f.scene, f.n, "", s.name + ", " + frameLabel(f)) +
       '</div>' +
       '<figcaption class="micro"><b>' + esc(s.name) + '</b><span>' + (isMain ? "" : esc(s.family)) + '</span></figcaption>' +
@@ -232,14 +242,14 @@
   }
 
   function renderStage(i) {
-    var s = STYLES[i], f = FRAMES[state.frame], stage = $("#stage");
+    var s = STYLES[i], fs = framesOf(s), f = fs[state.frame] || fs[0], stage = $("#stage");
     var c = state.compare ? STYLES[indexOf(state.compare)] : null;
     stage.className = "stage" + (c ? " compare" : "");
-    stage.innerHTML = pane(s, f, i, !c) + (c ? pane(c, f, indexOf(c.slug), false) : "");
+    stage.innerHTML = pane(s, f, i, !c) + (c ? pane(c, framesOf(c)[matchFrame(c, f)], indexOf(c.slug), false) : "");
     if (!c) $("figcaption", stage).innerHTML = "<span></span>";
-    $("#stage-label").innerHTML = '<span style="font-variant-numeric:tabular-nums">' + pad(state.frame + 1) + " / 04</span>&nbsp;&nbsp;&nbsp;" + frameLabel(f);
+    $("#stage-label").innerHTML = '<span style="font-variant-numeric:tabular-nums">' + pad(state.frame + 1) + " / " + pad(fs.length) + "</span>&nbsp;&nbsp;&nbsp;" + frameLabel(f);
     $$("[data-open]", stage).forEach(function (el) {
-      var open = function () { openLightbox(+el.dataset.open, state.frame); };
+      var open = function () { openLightbox(+el.dataset.open, +el.dataset.fr); };
       el.addEventListener("click", open);
       el.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); } });
     });
@@ -247,7 +257,8 @@
   }
 
   function setFrame(i, n) {
-    state.frame = (n + 4) % 4;
+    var len = framesOf(STYLES[i]).length;
+    state.frame = (n + len) % len;
     $$(".thumb", view).forEach(function (b) { b.setAttribute("aria-current", String(+b.dataset.frame === state.frame)); });
     var imgs = $$("#stage img");
     imgs.forEach(function (im) { im.style.opacity = 0; });
@@ -268,11 +279,11 @@
     drawLightbox(); lb.hidden = false; document.body.style.overflow = "hidden"; $("#lb-close").focus();
   }
   function drawLightbox() {
-    var s = STYLES[state.lbStyle], f = FRAMES[state.lbIndex], im = $("#lb-img");
+    var s = STYLES[state.lbStyle], fs = framesOf(s), f = fs[state.lbIndex] || fs[0], im = $("#lb-img");
     im.src = src(s, f.scene, f.n); im.alt = s.name + ", " + frameLabel(f);
-    $("#lb-cap").textContent = s.name + "  ·  " + frameLabel(f) + "  ·  " + pad(state.lbIndex + 1) + " / 04";
+    $("#lb-cap").textContent = s.name + "  ·  " + frameLabel(f) + "  ·  " + pad(state.lbIndex + 1) + " / " + pad(fs.length);
   }
-  function stepLightbox(d) { state.lbIndex = (state.lbIndex + d + 4) % 4; drawLightbox(); }
+  function stepLightbox(d) { var len = framesOf(STYLES[state.lbStyle]).length; state.lbIndex = (state.lbIndex + d + len) % len; drawLightbox(); }
   function closeLightbox() { lb.hidden = true; document.body.style.overflow = ""; }
   $("#lb-close").addEventListener("click", closeLightbox);
   $("#lb-prev").addEventListener("click", function () { stepLightbox(-1); });
@@ -325,7 +336,7 @@
     view.classList.remove("enter"); void view.offsetWidth; view.classList.add("enter");
   }
 
-  $("#foot-count").textContent = TOTAL + " styles · " + TOTAL * 4 + " frames";
+  $("#foot-count").textContent = TOTAL + " styles · " + FRAME_TOTAL + " frames";
   window.addEventListener("hashchange", route);
   route();
 })();
