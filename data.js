@@ -12,6 +12,20 @@ window.STYLES = [
     description: "Clean daylight photography with catalogue-sharp detail and neutral grading. Brand-safe realism for key art and product-led frames."
   },
   {
+    slug: "glossy-advertising-photo-illustration",
+    name: "Glossy Advertising Photo-Illustration",
+    family: "Photoreal",
+    frames: 2,
+    description: "High-sheen surfaces, saturated colour and warm hero light. A retouched advertising finish."
+  },
+  {
+    slug: "cinematic-photo-painted-realism",
+    name: "Cinematic Photo-Painted Realism",
+    family: "Photoreal",
+    frames: 2,
+    description: "A photographic base finished with painterly light, deep contrast and filmic warmth."
+  },
+  {
     slug: "3d-previsualization",
     name: "3D Previsualization",
     family: "Rendered",
@@ -24,10 +38,31 @@ window.STYLES = [
     description: "Airbrushed gradients, soft outlines and a calm, polished finish."
   },
   {
+    slug: "high-contrast-airbrushed-realism",
+    name: "High-Contrast Airbrushed Realism",
+    family: "Rendered",
+    frames: 2,
+    description: "Airbrush technique pushed to hard highlights and deep shadow. Punchy chrome and gloss."
+  },
+  {
+    slug: "selective-contour-soft-render-realism",
+    name: "Selective-Contour Soft-Render Realism",
+    family: "Rendered",
+    frames: 2,
+    description: "Soft rendered forms with contour lines only where they define shape. Warm, gentle, readable."
+  },
+  {
     slug: "polished-marker-and-ink-concept-realism",
     name: "Polished Marker-and-Ink Concept Realism",
     family: "Illustrated",
     description: "Concept-art marker rendering with loose edges and white paper breathing through."
+  },
+  {
+    slug: "full-colour-line-and-paint-realism",
+    name: "Full-Colour Line-and-Paint Realism",
+    family: "Illustrated",
+    frames: 2,
+    description: "Ink line over rich painted colour. Illustrated realism with golden-hour warmth."
   },
   {
     slug: "graphic-cel-inked-realism",
@@ -52,6 +87,13 @@ window.STYLES = [
     name: "Mixed-Media Scrapbook Composite",
     family: "Collage",
     description: "Photographic and illustrated elements layered together. Collage energy with a scrapbook edge."
+  },
+  {
+    slug: "luminous-neo-noir-realism",
+    name: "Luminous Neo-Noir Realism",
+    family: "Photoreal",
+    frames: 2,
+    description: "Night city, wet streets, practical light and hard reflections. Moody, high-contrast drama."
   },
   {
     slug: "dramatic-greyscale-concept-animatic",

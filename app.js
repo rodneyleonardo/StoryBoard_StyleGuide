@@ -26,7 +26,7 @@
 
   var header = $("#header"), view = $("#view");
   var TOTAL = STYLES.length;
-  var WORDS = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen", "Twenty"];
+  var WORDS = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen", "Twenty", "Twenty-one", "Twenty-two", "Twenty-three", "Twenty-four", "Twenty-five", "Twenty-six", "Twenty-seven", "Twenty-eight", "Twenty-nine", "Thirty"];
   var FRAME_TOTAL = STYLES.reduce(function (t, st) { return t + framesOf(st).length; }, 0);
 
   /* ---------- helpers ---------- */
@@ -61,7 +61,7 @@
       '</div>' +
       '<div class="cell tr hide-m"><span class="micro muted">' + TOTAL + " styles · " + FRAME_TOTAL + ' frames</span></div>' +
       '<div class="cell br h-desc">' +
-        '<p class="micro intro intro-wide">' + WORDS[TOTAL] + ' visual languages for storyboards, animatics and key art. Choose the look of your boards.</p>' +
+        '<p class="micro intro intro-wide">' + (WORDS[TOTAL] || TOTAL) + ' visual languages for storyboards, animatics and key art. Choose the look of your boards.</p>' +
       '</div>';
   }
 
