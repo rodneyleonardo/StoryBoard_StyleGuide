@@ -12,7 +12,8 @@
   ];
   var LETTER = ["A", "B"];
   var FRAMES_2 = [{ scene: "car", n: 1 }, { scene: "kid", n: 1 }];
-  function framesOf(style) { return style.frames === 2 ? FRAMES_2 : FRAMES; }
+  var FRAMES_5 = [{ scene: "car", n: 1 }, { scene: "kid", n: 1 }, { scene: "porsche", n: 1 }, { scene: "man", n: 1 }, { scene: "lake", n: 1 }];
+  function framesOf(style) { return style.frames === 5 ? FRAMES_5 : style.frames === 2 ? FRAMES_2 : FRAMES; }
   function matchFrame(style, f) {
     var fs = framesOf(style), k;
     for (k = 0; k < fs.length; k++) if (fs[k].scene === f.scene && fs[k].n === f.n) return k;
@@ -37,7 +38,7 @@
     return (window.IMAGE_MAP && window.IMAGE_MAP[p]) || p;
   }
   function other(scene) { return scene === "car" ? "kid" : "car"; }
-  function frameLabel(f) { return SCENES[f.scene] + " " + LETTER[f.n - 1]; }
+  function frameLabel(f) { return SCENES[f.scene] + (window.ONE_TAKE ? "" : " " + LETTER[f.n - 1]); }
   function href(style) { return "#" + style.slug; }
   function indexOf(slug) { for (var i = 0; i < TOTAL; i++) if (STYLES[i].slug === slug) return i; return -1; }
   function img(style, scene, n, cls, alt) {
@@ -168,7 +169,7 @@
 
     var FS = framesOf(s);
     var thumbs = FS.map(function (f, n) {
-      return '<button type="button" class="cell tl thumb' + (FS.length === 2 ? " span2" : "") + '" data-frame="' + n + '" aria-current="' + (n === state.frame) + '" aria-label="Show ' + frameLabel(f) + '">' +
+      return '<button type="button" class="tl thumb' + (FS.length === 5 ? "" : " cell") + (FS.length === 2 ? " span2" : "") + '" data-frame="' + n + '" aria-current="' + (n === state.frame) + '" aria-label="Show ' + frameLabel(f) + '">' +
         '<div class="frame natural">' + img(s, f.scene, f.n, "", "") + '</div>' +
         '<div class="bar"></div>' +
         '<div class="tcap micro"><span>' + frameLabel(f) + '</span><span>' + pad(n + 1) + '</span></div>' +
@@ -186,7 +187,7 @@
           '<span class="micro muted">' + pad(i + 1) + " · " + esc(s.family) + '</span>' +
           '<div><h2 class="d-name">' + esc(s.name) + '</h2><p class="d-desc">' + esc(s.description) + '</p></div>' +
         '</div>' +
-        '<div class="cell bl hide-m"><span class="micro muted">' + (FS.length === 2 ? "Two scenes, one take each." : "Two scenes, two takes each.") + '<br>Use ← → to step through frames.</span></div>' +
+        '<div class="cell bl hide-m"><span class="micro muted">' + (FS.length === 5 ? "Five scenes, one frame each." : FS.length === 2 ? "Two scenes, one take each." : "Two scenes, two takes each.") + '<br>Use ← → to step through frames.</span></div>' +
         '<div class="cell split br hide-m">' +
           '<button type="button" class="micro link" id="copy">Copy link</button>' +
           '<span class="micro muted">' + FS.length + ' frames</span>' +
@@ -202,7 +203,7 @@
             '</div>' +
           '</div>' +
         '</div>' +
-        thumbs +
+        (FS.length === 5 ? '<div class="cell strip-row"><div class="strip5">' + thumbs + '</div></div>' : thumbs) +
         '<a class="cell split tl nav-cell" href="' + href(prev) + '">' +
           '<div><span class="micro muted">← Previous</span><h3 class="name" style="margin-top:8px">' + esc(prev.name) + '</h3></div>' +
           '<div class="frame natural">' + img(prev, "car", 1, "", "") + '</div>' +

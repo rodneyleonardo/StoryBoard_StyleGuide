@@ -393,3 +393,12 @@ body { background: var(--sheet); }
 .logo-home { width: clamp(150px, 12vw, 250px); }
 .is-detail .header .logo { width: clamp(130px, 10vw, 210px); }
 @media (max-width: 760px) { .logo-home { width: 150px; } }
+
+/* Style pages: five-frame strip */
+.strip-row { grid-column: 1 / -1; aspect-ratio: auto !important; min-height: 0 !important; }
+.strip5 { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--cell-pad); }
+.strip5 .thumb { display: flex; flex-direction: column; text-align: left; padding: 0; }
+@media (max-width: 760px) {
+  .strip5 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 12px; }
+  .strip5 .thumb:first-child { grid-column: 1 / -1; }
+}
