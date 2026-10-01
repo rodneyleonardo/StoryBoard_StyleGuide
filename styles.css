@@ -388,3 +388,8 @@ body { background: var(--sheet); }
 
 /* Style pages: new wide logo needs more room in its cell */
 .is-detail .header .logo { width: 88%; max-width: 380px; }
+
+/* Smaller, quieter logo */
+.logo-home { width: clamp(150px, 12vw, 250px); }
+.is-detail .header .logo { width: clamp(130px, 10vw, 210px); }
+@media (max-width: 760px) { .logo-home { width: 150px; } }
