@@ -49,23 +49,10 @@
     header.innerHTML =
       '<div class="cell split">' + TITLE + '<p class="micro muted intro">Choose the look<br>of your boards.</p></div>' +
       '<div class="cell split"><span class="micro muted hide-m">' + TOTAL + " styles · " + TOTAL * 4 + ' frames</span>' + LOGO + '</div>' +
-      '<div class="cell tr">' + MENU + '</div>' +
-      '<div class="cell split br">' +
-        '<div class="toggle micro" role="group" aria-label="Scene">' +
-          '<span class="muted">Scene</span>' +
-          '<button type="button" class="link" data-scene="car" aria-pressed="' + (state.scene === "car") + '">' + SCENES.car + '</button>' +
-          '<button type="button" class="link" data-scene="kid" aria-pressed="' + (state.scene === "kid") + '">' + SCENES.kid + '</button>' +
-        '</div>' +
+      '<div class="cell"></div>' +
+      '<div class="cell split br">' + MENU +
         '<p class="micro intro intro-wide">' + WORDS[TOTAL] + ' visual languages for storyboards, animatics and key art. Every style is drawn on the same two scenes, so the treatment is the only variable.</p>' +
       '</div>';
-    $$("[data-scene]", header).forEach(function (b) {
-      b.addEventListener("click", function () {
-        if (state.scene === b.dataset.scene) return;
-        state.scene = b.dataset.scene;
-        $$("[data-scene]", header).forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
-        swapScenes();
-      });
-    });
     $("#menu-btn").addEventListener("click", openIndex);
   }
 
@@ -74,9 +61,8 @@
     header.innerHTML =
       '<div class="cell split">' + TITLE + '<a class="micro link" href="#">← All styles</a></div>' +
       '<div class="cell split"><span class="micro muted hide-m">' + esc(STYLES[i].family) + '</span>' + LOGO + '</div>' +
-      '<div class="cell tr">' + MENU + '</div>' +
-      '<div class="cell split br">' +
-        '<span class="micro" style="font-variant-numeric:tabular-nums">' + pad(i + 1) + " / " + pad(TOTAL) + '</span>' +
+      '<div class="cell tr"><span class="micro" style="font-variant-numeric:tabular-nums">' + pad(i + 1) + " / " + pad(TOTAL) + '</span></div>' +
+      '<div class="cell split br">' + MENU +
         '<span class="micro"><a class="link" href="' + href(prev) + '" aria-label="Previous style: ' + esc(prev.name) + '">Previous</a>&nbsp;&nbsp;&nbsp;<a class="link" href="' + href(next) + '" aria-label="Next style: ' + esc(next.name) + '">Next</a></span>' +
       '</div>';
     $("#menu-btn").addEventListener("click", openIndex);
