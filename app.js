@@ -347,6 +347,7 @@
     var m = location.hash.match(/^#(.+)$/);
     var i = m ? indexOf(decodeURIComponent(m[1])) : -1;
     if (lastRoute === "index") indexScroll = window.scrollY;
+    document.body.classList.toggle("is-detail", i > -1);
     if (i > -1) {
       if (lastRoute !== STYLES[i].slug) state.frame = 0;
       renderDetail(i); lastRoute = STYLES[i].slug;
