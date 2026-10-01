@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Storyboard Styles · WPP AI</title>
+  <meta name="description" content="Ten visual languages for storyboards, animatics and key art. Browse and choose the look of your boards.">
+  <meta property="og:title" content="Storyboard Styles · WPP AI">
+  <meta property="og:description" content="Ten visual languages for storyboards, animatics and key art.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Inter+Tight:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to styles</a>
+
+  <p class="crumb" id="crumb">WPP AI Department</p>
+
+  <div class="card" id="main" tabindex="-1">
+    <!-- Header row: rendered by app.js so it can change per view -->
+    <header class="grid header" id="header"></header>
+    <main id="view" aria-live="polite"></main>
+  </div>
+
+  <footer class="foot">
+    <span>WPP AI · Storyboard Styles</span>
+    <span id="foot-count">10 styles · 40 frames</span>
+  </footer>
+
+  <!-- Index overlay -->
+  <div class="index" id="index" hidden>
+    <div class="index-inner">
+      <div class="index-head">
+        <span class="micro">Index</span>
+        <button class="micro link" id="index-close" type="button">Close</button>
+      </div>
+      <div class="index-body">
+        <ol class="index-list" id="index-list"></ol>
+        <figure class="index-peek" aria-hidden="true"><img id="index-peek" alt=""></figure>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Frame viewer">
+    <button class="lb-close micro link" id="lb-close" type="button">Close</button>
+    <button class="lb-arrow lb-prev" id="lb-prev" type="button" aria-label="Previous frame">←</button>
+    <figure class="lb-figure">
+      <img id="lb-img" alt="">
+      <figcaption class="micro" id="lb-cap"></figcaption>
+    </figure>
+    <button class="lb-arrow lb-next" id="lb-next" type="button" aria-label="Next frame">→</button>
+  </div>
+
+  <div class="toast micro" id="toast" role="status" hidden></div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
