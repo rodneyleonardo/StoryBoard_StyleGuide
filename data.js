@@ -115,8 +115,8 @@ window.STYLES = [
 window.SCENES = {
   car: "Street",
   kid: "Breakfast",
-  porsche: "Porsche",
-  man: "Portrait",
+  keeper: "Goalkeeper",
+  elephants: "Elephants",
   lake: "Lake"
 };
 window.ONE_TAKE = true;

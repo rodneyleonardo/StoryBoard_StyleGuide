@@ -12,7 +12,7 @@
   ];
   var LETTER = ["A", "B"];
   var FRAMES_2 = [{ scene: "car", n: 1 }, { scene: "kid", n: 1 }];
-  var FRAMES_5 = [{ scene: "car", n: 1 }, { scene: "kid", n: 1 }, { scene: "porsche", n: 1 }, { scene: "man", n: 1 }, { scene: "lake", n: 1 }];
+  var FRAMES_5 = [{ scene: "car", n: 1 }, { scene: "kid", n: 1 }, { scene: "keeper", n: 1 }, { scene: "elephants", n: 1 }, { scene: "lake", n: 1 }];
   function framesOf(style) { return style.frames === 5 ? FRAMES_5 : style.frames === 2 ? FRAMES_2 : FRAMES; }
   function matchFrame(style, f) {
     var fs = framesOf(style), k;
