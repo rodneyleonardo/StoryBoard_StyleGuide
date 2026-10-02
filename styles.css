@@ -399,6 +399,8 @@ body { background: var(--sheet); }
 .strip5 { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--cell-pad); }
 .strip5 .thumb { display: flex; flex-direction: column; text-align: left; padding: 0; }
 @media (max-width: 760px) {
-  .strip5 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 12px; }
-  .strip5 .thumb:first-child { grid-column: 1 / -1; }
+  .strip5 { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+  .strip5 .thumb .tcap { margin-top: 6px; font-size: 10px; }
+  .strip5 .thumb .tcap span:last-child { display: none; }
+  .strip5 .thumb .bar { margin-top: 4px; }
 }
