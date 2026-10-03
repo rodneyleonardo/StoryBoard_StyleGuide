@@ -3,7 +3,7 @@
 (function () {
   "use strict";
 
-  var STYLES = window.STYLES || [];
+  var STYLES = (window.STYLES || []).filter(function (s) { return !s.hidden; });
   var SCENES = window.SCENES || { car: "Street", kid: "Breakfast" };
   var EXT = window.IMAGE_EXT || "webp";
   var FRAMES = [

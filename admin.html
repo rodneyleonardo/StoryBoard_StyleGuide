@@ -1,0 +1,587 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Admin · Storyboard Styles</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Inter+Tight:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* Admin · same tokens as the public site (styles.css), kept standalone so this page never depends on site CSS changes. */
+    :root {
+      --sheet: #ffffff; --ink: #111111; --muted: #8a8a8a; --hair: #ececec; --soft: #f6f6f6;
+      --alert: #a3341f; --ok: #2f6b3a;
+      --pad: clamp(14px, 1.6vw, 40px);
+      --micro: clamp(11px, .68vw, 15px);
+      --serif: "Cormorant Garamond", "EB Garamond", Garamond, "Times New Roman", serif;
+      --sans: "Inter Tight", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      --ease: cubic-bezier(.2, .7, .1, 1);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--sheet); color: var(--ink); font: 400 var(--micro)/1.4 var(--sans); -webkit-font-smoothing: antialiased; }
+    img { display: block; max-width: 100%; }
+    button, input, textarea, select { font: inherit; color: inherit; }
+    button { background: none; border: 0; padding: 0; cursor: pointer; }
+    a { color: inherit; }
+    :focus-visible { outline: 1px solid var(--ink); outline-offset: 3px; }
+    [hidden] { display: none !important; }
+
+    .muted { color: var(--muted); }
+    .link { position: relative; text-decoration: none; }
+    .link::after { content: ""; position: absolute; left: 0; right: 0; bottom: -2px; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform .45s var(--ease); }
+    .link:hover::after, .link:focus-visible::after { transform: scaleX(1); }
+    .link[disabled] { opacity: .3; pointer-events: none; }
+    .danger { color: var(--alert); }
+
+    /* Grid */
+    .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .cell { padding: var(--pad); border-right: 1px solid var(--hair); border-bottom: 1px solid var(--hair); min-width: 0; display: flex; flex-direction: column; }
+    .grid > .cell:last-child { border-right: 0; }
+    .span2 { grid-column: span 2; }
+    .split { justify-content: space-between; }
+
+    /* Header */
+    .head .cell { min-height: clamp(180px, 14vw, 300px); }
+    .logo { width: clamp(150px, 12vw, 250px); }
+    .title { margin: 0; font: 300 clamp(34px, 4.2vw, 96px)/.95 var(--serif); letter-spacing: -.012em; }
+    .title em { font-style: italic; }
+    .tr { align-items: flex-end; text-align: right; }
+
+    /* Connect */
+    .connect { max-width: 560px; display: grid; gap: 14px; }
+    .field { display: grid; gap: 6px; }
+    .field label { color: var(--muted); }
+    .input, .textarea {
+      width: 100%; border: 0; border-bottom: 1px solid #d8d8d8; border-radius: 0; background: transparent;
+      padding: 8px 0; outline: none; transition: border-color .3s;
+    }
+    .input:focus, .textarea:focus { border-color: var(--ink); }
+    .input.big { font: 300 clamp(24px, 2.2vw, 40px)/1.1 var(--serif); }
+    .textarea { resize: vertical; min-height: 64px; }
+    .row { display: flex; gap: 18px; flex-wrap: wrap; align-items: baseline; }
+    .btn { border: 1px solid var(--ink); padding: 10px 18px; transition: background .25s, color .25s; }
+    .btn:hover { background: var(--ink); color: #fff; }
+    .btn.solid { background: var(--ink); color: #fff; }
+    .btn.solid:hover { background: #333; }
+    .btn[disabled] { opacity: .35; pointer-events: none; }
+
+    /* Workspace */
+    .work { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); border-bottom: 1px solid var(--hair); }
+    .list-col { border-right: 1px solid var(--hair); }
+    .list-head { display: flex; justify-content: space-between; align-items: baseline; padding: 18px var(--pad); border-bottom: 1px solid var(--hair); gap: 12px; flex-wrap: wrap; }
+    .list { list-style: none; margin: 0; padding: 0; }
+    .item {
+      display: grid; grid-template-columns: 3em clamp(90px, 9vw, 150px) minmax(0, 1fr) auto; gap: 18px; align-items: center;
+      padding: 14px var(--pad); border-bottom: 1px solid var(--hair); transition: background .25s;
+    }
+    .item.on { background: var(--soft); }
+    .item.is-hidden .thumb, .item.is-hidden .iname { opacity: .35; }
+    .item.is-new .iname::after { content: "New"; margin-left: 10px; font: 400 var(--micro) var(--sans); color: var(--ok); vertical-align: middle; }
+    .num { color: var(--muted); font-variant-numeric: tabular-nums; }
+    .thumb { aspect-ratio: 1088 / 608; background: var(--soft); overflow: hidden; }
+    .thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .iname { margin: 0; font: 300 clamp(18px, 1.5vw, 30px)/1.1 var(--serif); }
+    .imeta { color: var(--muted); margin-top: 4px; }
+    .imeta .state { color: var(--ink); }
+    .item.is-hidden .imeta .state { color: var(--alert); }
+    .acts { display: grid; grid-auto-flow: column; gap: 14px; align-items: center; white-space: nowrap; }
+    .arrows { display: grid; gap: 2px; }
+    .arrow { font: 300 16px/1 var(--serif); padding: 2px 6px; opacity: .6; }
+    .arrow:hover { opacity: 1; }
+    .arrow[disabled] { opacity: .15; pointer-events: none; }
+
+    /* Editor */
+    .editor { position: sticky; top: 0; align-self: start; padding: var(--pad); display: grid; gap: 22px; max-height: 100vh; overflow: auto; }
+    .editor h2 { margin: 0; font: 300 clamp(26px, 2.4vw, 46px)/1 var(--serif); }
+    .frames { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+    .drop {
+      position: relative; aspect-ratio: 1088 / 608; border: 1px dashed #cfcfcf; background: var(--soft);
+      display: flex; align-items: center; justify-content: center; text-align: center; cursor: pointer; overflow: hidden;
+      transition: border-color .25s, background .25s;
+    }
+    .drop:hover, .drop.drag { border-color: var(--ink); background: #efefef; }
+    .drop img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .drop .plus { font: 300 22px/1 var(--serif); color: var(--muted); }
+    .drop.filled { border-style: solid; border-color: var(--hair); }
+    .drop.changed::after { content: ""; position: absolute; top: 6px; right: 6px; width: 7px; height: 7px; border-radius: 50%; background: var(--ok); }
+    .flabel { display: flex; justify-content: space-between; margin-top: 6px; color: var(--muted); }
+    .hint { color: var(--muted); max-width: 52ch; }
+    .err { color: var(--alert); }
+
+    .confirm { border: 1px solid var(--alert); padding: 14px; display: grid; gap: 10px; }
+
+    /* Publish bar */
+    .bar {
+      position: sticky; bottom: 0; z-index: 5; background: rgba(255,255,255,.96); backdrop-filter: blur(6px);
+      border-top: 1px solid var(--ink); padding: 14px var(--pad) calc(14px + env(safe-area-inset-bottom, 0px));
+      display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;
+    }
+    .changes { display: flex; gap: 6px 18px; flex-wrap: wrap; }
+    .changes span::before { content: "· "; color: var(--muted); }
+    .status { min-height: 1.4em; }
+    .status.ok { color: var(--ok); }
+    .status.bad { color: var(--alert); }
+    .foot { display: flex; justify-content: space-between; padding: 18px var(--pad) 40px; color: var(--muted); gap: 12px; flex-wrap: wrap; }
+
+    @media (max-width: 1000px) {
+      .work { grid-template-columns: 1fr; }
+      .list-col { border-right: 0; }
+      .editor { position: static; max-height: none; border-top: 1px solid var(--ink); }
+    }
+    @media (max-width: 680px) {
+      .grid { grid-template-columns: 1fr 1fr; }
+      .head .cell { min-height: 120px; }
+      .head .hide-m { display: none; }
+      .head .cell { grid-column: 1 / -1; border-right: 0; }
+      .head .tr { min-height: 0; flex-direction: row; align-items: baseline; padding-top: 12px; padding-bottom: 12px; }
+      .item .arrows { grid-auto-flow: column; }
+      .item { grid-template-columns: 90px minmax(0, 1fr); grid-template-areas: "t n" "t a"; gap: 6px 12px; }
+      .item .num { display: none; }
+      .item .thumb { grid-area: t; }
+      .item .main { grid-area: n; }
+      .item .acts { grid-area: a; justify-content: start; gap: 12px; }
+      .frames { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  </style>
+</head>
+<body>
+
+  <header class="grid head">
+    <div class="cell split span2">
+      <img class="logo" src="assets/wpp-production-logo.svg" alt="WPP Production">
+      <h1 class="title">Storyboard Styles <em>Admin</em></h1>
+    </div>
+    <div class="cell tr hide-m"><span class="muted" id="repo-label">Not connected</span></div>
+    <div class="cell split tr">
+      <a class="link" href="./" target="_blank" rel="noopener">View live site ↗</a>
+      <span class="muted" id="count-label"></span>
+    </div>
+  </header>
+
+  <!-- Step 1: connect -->
+  <section id="connect-view" class="grid">
+    <div class="cell span2">
+      <form class="connect" id="connect-form" autocomplete="off">
+        <p class="hint">Connect with a GitHub access token that can edit this repository. The token stays in this browser and is never saved to the site.</p>
+        <div class="field">
+          <label for="f-token">GitHub token</label>
+          <input class="input" id="f-token" type="password" placeholder="github_pat_…" required>
+        </div>
+        <div class="row">
+          <div class="field" style="flex:1 1 160px"><label for="f-owner">Owner</label><input class="input" id="f-owner" value="rodneyleonardo" required></div>
+          <div class="field" style="flex:2 1 220px"><label for="f-repo">Repository</label><input class="input" id="f-repo" value="StoryBoard_StyleGuide" required></div>
+          <div class="field" style="flex:1 1 100px"><label for="f-branch">Branch</label><input class="input" id="f-branch" value="main" required></div>
+        </div>
+        <label class="row" style="gap:8px"><input type="checkbox" id="f-remember" checked> <span>Remember on this computer</span></label>
+        <div class="row"><button class="btn solid" type="submit" id="connect-btn">Connect</button><span class="status" id="connect-status"></span></div>
+      </form>
+    </div>
+    <div class="cell span2">
+      <p class="muted" style="margin:0 0 8px">How to make a token</p>
+      <ol class="hint" style="margin:0;padding-left:18px;line-height:1.7">
+        <li>GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token.</li>
+        <li>Repository access: Only select repositories → this repository.</li>
+        <li>Permissions → Repository permissions → Contents: Read and write.</li>
+        <li>Pick an expiry date, generate, and paste the token here.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Step 2: manage -->
+  <section id="work-view" hidden>
+    <div class="work">
+      <div class="list-col">
+        <div class="list-head">
+          <span class="muted">Reorder with the arrows. Hidden styles stay in the library but don't appear on the site.</span>
+          <button class="link" type="button" id="add-btn">+ Add a new style</button>
+        </div>
+        <ol class="list" id="list"></ol>
+      </div>
+      <aside class="editor" id="editor" aria-live="polite"></aside>
+    </div>
+
+    <div class="bar">
+      <div>
+        <div class="changes" id="changes"><span class="muted" style="all:unset;color:var(--muted)">No changes yet.</span></div>
+        <div class="status" id="pub-status"></div>
+      </div>
+      <div class="row">
+        <button class="link" type="button" id="discard-btn" disabled>Discard changes</button>
+        <button class="btn solid" type="button" id="publish-btn" disabled>Publish to site</button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <span>WPP Production · Storyboard Styles · Admin</span>
+    <button class="link" type="button" id="signout-btn" hidden>Disconnect</button>
+  </footer>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------- config ---------- */
+  var W = 1088, H = 608, QUALITY = 0.86;
+  var API = "https://api.github.com";
+  var LS = "wpp-styles-admin";
+  var DEFAULT_SCENES = { car: "Street", kid: "Breakfast", keeper: "Goalkeeper", elephants: "Elephants", lake: "Lake" };
+
+  var cfg = null;              // { token, owner, repo, branch }
+  var base = null;             // { styles, scenes, extras, dataSha, headSha }
+  var styles = [];             // working copy
+  var pendingImgs = {};        // path -> { b64, url }
+  var deletedSlugs = [];       // slugs whose image folders should be removed
+  var selected = null;         // slug in editor, "__new" for new
+  var draft = null;            // editor working object for new style
+  var canWebp = null;
+
+  var $ = function (s) { return document.querySelector(s); };
+  function esc(t) { return String(t == null ? "" : t).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function pad(n) { return (n < 10 ? "0" : "") + n; }
+  function slugify(s) { return String(s).toLowerCase().normalize("NFKD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, ""); }
+  function scenes() { return (base && base.scenes) || DEFAULT_SCENES; }
+  function sceneKeys() { return Object.keys(scenes()); }
+  function imgPath(slug, key) { return "images/" + slug + "/" + key + "-1.webp"; }
+  function store(get, val) {
+    try { if (get) return JSON.parse(localStorage.getItem(LS) || "null"); if (val) localStorage.setItem(LS, JSON.stringify(val)); else localStorage.removeItem(LS); } catch (e) { return null; }
+  }
+
+  /* ---------- GitHub API ---------- */
+  function gh(path, opts) {
+    opts = opts || {};
+    return fetch(API + path, {
+      method: opts.method || "GET",
+      headers: { "Authorization": "Bearer " + cfg.token, "Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28", "Content-Type": "application/json" },
+      body: opts.body ? JSON.stringify(opts.body) : undefined,
+      cache: "no-store"
+    }).then(function (r) {
+      if (r.status === 404 && opts.allow404) return null;
+      if (!r.ok) return r.json().catch(function () { return {}; }).then(function (j) {
+        var msg = j.message || ("GitHub error " + r.status);
+        if (r.status === 401) msg = "GitHub didn't accept the token. Check that it's pasted fully and hasn't expired.";
+        if (r.status === 403 || r.status === 404) msg = "The token can't reach " + cfg.owner + "/" + cfg.repo + ". Make sure it has Contents: Read and write on this repository.";
+        throw new Error(msg);
+      });
+      return r.status === 204 ? null : r.json();
+    });
+  }
+  var repoPath = function () { return "/repos/" + encodeURIComponent(cfg.owner) + "/" + encodeURIComponent(cfg.repo); };
+  function b64ToText(b64) { var bin = atob(b64.replace(/\n/g, "")); var bytes = new Uint8Array(bin.length); for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i); return new TextDecoder().decode(bytes); }
+
+  function parseData(text) {
+    var w = {};
+    new Function("window", text)(w);
+    if (!Array.isArray(w.STYLES)) throw new Error("data.js doesn't contain a style list.");
+    var extras = {};
+    Object.keys(w).forEach(function (k) { if (k !== "STYLES" && k !== "SCENES") extras[k] = w[k]; });
+    return { styles: w.STYLES, scenes: w.SCENES || DEFAULT_SCENES, extras: extras };
+  }
+
+  function serialize(list) {
+    var clean = list.map(function (s) {
+      var o = { slug: s.slug, name: s.name, family: s.family, frames: sceneKeys().length, description: s.description };
+      if (s.hidden) o.hidden = true;
+      return o;
+    });
+    var out = "/*\n  Storyboard Styles: content.\n  Managed from admin.html. Each style has one frame per scene, stored in images/<slug>/<scene>-1.webp.\n  A style with hidden: true stays in the library but is not shown on the site.\n*/\n";
+    out += "window.STYLES = " + JSON.stringify(clean, null, 2) + ";\n\n";
+    out += "window.SCENES = " + JSON.stringify(scenes(), null, 2) + ";\n";
+    Object.keys(base.extras).forEach(function (k) { out += "window." + k + " = " + JSON.stringify(base.extras[k]) + ";\n"; });
+    return out;
+  }
+
+  function load() {
+    var refP = gh(repoPath() + "/git/ref/heads/" + encodeURIComponent(cfg.branch));
+    var dataP = gh(repoPath() + "/contents/data.js?ref=" + encodeURIComponent(cfg.branch));
+    return Promise.all([refP, dataP]).then(function (res) {
+      var parsed = parseData(b64ToText(res[1].content));
+      base = { styles: parsed.styles, scenes: parsed.scenes, extras: parsed.extras, dataSha: res[1].sha, headSha: res[0].object.sha };
+      styles = JSON.parse(JSON.stringify(parsed.styles));
+      pendingImgs = {}; deletedSlugs = []; selected = null; draft = null;
+    });
+  }
+
+  /* ---------- image conversion ---------- */
+  function detectWebp() {
+    if (canWebp !== null) return canWebp;
+    var c = document.createElement("canvas"); c.width = c.height = 2;
+    canWebp = c.toDataURL("image/webp").indexOf("data:image/webp") === 0;
+    return canWebp;
+  }
+  function convert(file) {
+    return new Promise(function (resolve, reject) {
+      if (!file || !/^image\//.test(file.type)) return reject(new Error("That file isn't an image."));
+      if (!detectWebp()) return reject(new Error("This browser can't create WebP images. Please use Chrome for adding frames."));
+      var url = URL.createObjectURL(file), im = new Image();
+      im.onload = function () {
+        var c = document.createElement("canvas"); c.width = W; c.height = H;
+        var g = c.getContext("2d"), s = Math.max(W / im.naturalWidth, H / im.naturalHeight);
+        var dw = im.naturalWidth * s, dh = im.naturalHeight * s;
+        g.drawImage(im, (W - dw) / 2, (H - dh) / 2, dw, dh);
+        URL.revokeObjectURL(url);
+        var data = c.toDataURL("image/webp", QUALITY);
+        resolve({ b64: data.split(",")[1], url: data, ratioOff: Math.abs(im.naturalWidth / im.naturalHeight - W / H) > 0.02 });
+      };
+      im.onerror = function () { URL.revokeObjectURL(url); reject(new Error("Couldn't read that image.")); };
+      im.src = url;
+    });
+  }
+
+  /* ---------- change tracking ---------- */
+  function diff() {
+    var out = [], baseBy = {}, curBy = {};
+    base.styles.forEach(function (s) { baseBy[s.slug] = s; });
+    styles.forEach(function (s) { curBy[s.slug] = s; });
+    styles.forEach(function (s) {
+      var b = baseBy[s.slug];
+      if (!b) { out.push("Add " + s.name); return; }
+      if (!!b.hidden !== !!s.hidden) out.push((s.hidden ? "Hide " : "Show ") + s.name);
+      if (b.name !== s.name || b.family !== s.family || b.description !== s.description) out.push("Edit " + s.name);
+      var changed = sceneKeys().filter(function (k) { return pendingImgs[imgPath(s.slug, k)]; }).length;
+      if (changed) out.push("Replace " + changed + " frame" + (changed > 1 ? "s" : "") + " in " + s.name);
+    });
+    base.styles.forEach(function (s) { if (!curBy[s.slug]) out.push("Delete " + s.name); });
+    var bOrder = base.styles.map(function (s) { return s.slug; }).filter(function (x) { return curBy[x]; }).join();
+    var cOrder = styles.map(function (s) { return s.slug; }).filter(function (x) { return baseBy[x]; }).join();
+    if (bOrder !== cOrder) out.push("Reorder list");
+    return out;
+  }
+
+  /* ---------- render ---------- */
+  function thumbSrc(s) { var p = imgPath(s.slug, sceneKeys()[0]); return pendingImgs[p] ? pendingImgs[p].url : p + "?v=" + base.headSha.slice(0, 7); }
+  function isNew(s) { return !base.styles.some(function (b) { return b.slug === s.slug; }); }
+
+  function renderList() {
+    var live = styles.filter(function (s) { return !s.hidden; }).length;
+    $("#count-label").textContent = live + " live · " + (styles.length - live) + " hidden";
+    $("#list").innerHTML = styles.map(function (s, i) {
+      return '<li class="item' + (s.hidden ? " is-hidden" : "") + (isNew(s) ? " is-new" : "") + (selected === s.slug ? " on" : "") + '" data-slug="' + esc(s.slug) + '">' +
+        '<span class="num">' + pad(i + 1) + '</span>' +
+        '<div class="thumb"><img src="' + esc(thumbSrc(s)) + '" alt="" loading="lazy"></div>' +
+        '<div class="main"><p class="iname">' + esc(s.name) + '</p><div class="imeta">' + esc(s.family) + ' · <span class="state">' + (s.hidden ? "Hidden" : "Live") + '</span></div></div>' +
+        '<div class="acts">' +
+          '<span class="arrows"><button class="arrow" data-act="up" aria-label="Move up"' + (i === 0 ? " disabled" : "") + '>↑</button><button class="arrow" data-act="down" aria-label="Move down"' + (i === styles.length - 1 ? " disabled" : "") + '>↓</button></span>' +
+          '<button class="link" data-act="edit">Edit</button>' +
+          '<button class="link" data-act="toggle">' + (s.hidden ? "Show" : "Hide") + '</button>' +
+        '</div></li>';
+    }).join("");
+    var d = diff();
+    $("#changes").innerHTML = d.length ? d.map(function (x) { return "<span>" + esc(x) + "</span>"; }).join("") : '<span class="muted" style="all:unset;color:var(--muted)">No changes yet.</span>';
+    $("#publish-btn").disabled = !d.length;
+    $("#discard-btn").disabled = !d.length;
+  }
+
+  function frameGrid(slug, existing) {
+    return '<div class="frames">' + sceneKeys().map(function (k, n) {
+      var p = slug ? imgPath(slug, k) : null, pend = p && pendingImgs[p], dk = draft && draft.imgs && draft.imgs[k];
+      var src = pend ? pend.url : dk ? dk.url : (existing && p ? p + "?v=" + base.headSha.slice(0, 7) : "");
+      return '<div><label class="drop' + (src ? " filled" : "") + (pend || dk ? " changed" : "") + '" data-key="' + k + '" tabindex="0">' +
+        (src ? '<img src="' + esc(src) + '" alt="">' : '<span class="plus">+</span>') +
+        '<input type="file" accept="image/*" hidden></label>' +
+        '<div class="flabel"><span>' + esc(scenes()[k]) + '</span><span>' + pad(n + 1) + '</span></div></div>';
+    }).join("") + '</div>';
+  }
+
+  function families() {
+    var f = {}; styles.forEach(function (s) { if (s.family) f[s.family] = 1; });
+    return '<datalist id="fams">' + Object.keys(f).map(function (x) { return '<option value="' + esc(x) + '">'; }).join("") + '</datalist>';
+  }
+
+  function renderEditor() {
+    var ed = $("#editor");
+    if (!selected) {
+      ed.innerHTML = '<p class="muted" style="margin:0">Select Edit on a style, or add a new one.</p>' +
+        '<p class="hint">Changes are staged here until you press Publish to site. Publishing makes one commit to GitHub, and the live site updates in about a minute.</p>';
+      return;
+    }
+    if (selected === "__new") {
+      ed.innerHTML = '<h2>New style</h2>' +
+        '<div class="field"><label for="e-name">Name</label><input class="input big" id="e-name" value="' + esc(draft.name) + '" placeholder="Style name"></div>' +
+        '<div class="field"><label for="e-family">Family</label><input class="input" id="e-family" list="fams" value="' + esc(draft.family) + '" placeholder="Photoreal, Illustrated, Greyscale…">' + families() + '</div>' +
+        '<div class="field"><label for="e-desc">Description</label><textarea class="textarea" id="e-desc" rows="3" placeholder="One or two short sentences.">' + esc(draft.description) + '</textarea></div>' +
+        '<div class="field"><label>Frames, one per scene. Click or drop an image on each.</label>' + frameGrid(null, false) + '</div>' +
+        '<p class="hint">Images are resized to 1088 × 608 and saved as WebP. The first frame is the thumbnail on the home page.</p>' +
+        '<p class="err" id="e-err"></p>' +
+        '<div class="row"><button class="btn solid" type="button" id="e-save">Add to list</button><button class="link" type="button" id="e-cancel">Cancel</button></div>';
+      wireEditor(true);
+      return;
+    }
+    var s = styles.filter(function (x) { return x.slug === selected; })[0];
+    if (!s) { selected = null; return renderEditor(); }
+    ed.innerHTML = '<span class="muted">' + esc(s.slug) + '</span>' +
+      '<div class="field"><label for="e-name">Name</label><input class="input big" id="e-name" value="' + esc(s.name) + '"></div>' +
+      '<div class="field"><label for="e-family">Family</label><input class="input" id="e-family" list="fams" value="' + esc(s.family) + '">' + families() + '</div>' +
+      '<div class="field"><label for="e-desc">Description</label><textarea class="textarea" id="e-desc" rows="3">' + esc(s.description) + '</textarea></div>' +
+      '<div class="field"><label>Frames. Drop an image on any frame to replace it.</label>' + frameGrid(s.slug, !isNew(s)) + '</div>' +
+      '<p class="err" id="e-err"></p>' +
+      '<div class="row"><button class="btn solid" type="button" id="e-save">Apply</button><button class="link" type="button" id="e-cancel">Close</button>' +
+      '<span style="flex:1"></span><button class="link danger" type="button" id="e-delete">Delete style</button></div>' +
+      '<div id="e-confirm"></div>';
+    wireEditor(false, s);
+  }
+
+  function wireEditor(isNewStyle, s) {
+    document.querySelectorAll("#editor .drop").forEach(function (dz) {
+      var input = dz.querySelector("input"), key = dz.dataset.key;
+      function take(file) {
+        $("#e-err").className = "hint"; $("#e-err").textContent = "Converting " + scenes()[key] + "…";
+        convert(file).then(function (res) {
+          var er = $("#e-err"); er.className = "hint"; er.textContent = res.ratioOff ? scenes()[key] + " wasn't 16:9, so it was centre-cropped to fit." : "";
+          if (isNewStyle) { draft.imgs[key] = res; }
+          else { pendingImgs[imgPath(s.slug, key)] = res; renderList(); }
+          var old = dz.querySelector("img, .plus"); if (old) old.remove();
+          var im = document.createElement("img"); im.src = res.url; im.alt = ""; dz.insertBefore(im, input);
+          dz.classList.add("filled", "changed");
+        }).catch(function (e) { $("#e-err").className = "err"; $("#e-err").textContent = e.message; });
+      }
+      input.addEventListener("change", function () { if (input.files[0]) take(input.files[0]); });
+      dz.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); } });
+      dz.addEventListener("dragover", function (e) { e.preventDefault(); dz.classList.add("drag"); });
+      dz.addEventListener("dragleave", function () { dz.classList.remove("drag"); });
+      dz.addEventListener("drop", function (e) { e.preventDefault(); dz.classList.remove("drag"); if (e.dataTransfer.files[0]) take(e.dataTransfer.files[0]); });
+    });
+    $("#e-cancel").addEventListener("click", function () { selected = null; draft = null; renderList(); renderEditor(); });
+    $("#e-save").addEventListener("click", function () {
+      var name = $("#e-name").value.trim(), fam = $("#e-family").value.trim(), desc = $("#e-desc").value.trim(), err = $("#e-err"); err.className = "err";
+      if (!name) { err.textContent = "Give the style a name."; return; }
+      if (!fam) { err.textContent = "Add a family, for example Illustrated."; return; }
+      if (isNewStyle) {
+        var missing = sceneKeys().filter(function (k) { return !draft.imgs[k]; });
+        if (missing.length) { err.textContent = "Add the missing frame" + (missing.length > 1 ? "s" : "") + ": " + missing.map(function (k) { return scenes()[k]; }).join(", ") + "."; return; }
+        var slug = slugify(name), n = 2;
+        while (styles.some(function (x) { return x.slug === slug; }) || base.styles.some(function (x) { return x.slug === slug; })) slug = slugify(name) + "-" + n++;
+        sceneKeys().forEach(function (k) { pendingImgs[imgPath(slug, k)] = draft.imgs[k]; });
+        deletedSlugs = deletedSlugs.filter(function (x) { return x !== slug; });
+        styles.push({ slug: slug, name: name, family: fam, frames: sceneKeys().length, description: desc });
+        selected = null; draft = null;
+      } else {
+        s.name = name; s.family = fam; s.description = desc; selected = null;
+      }
+      renderList(); renderEditor();
+      $("#pub-status").className = "status"; $("#pub-status").textContent = "Staged. Press Publish to site when you're ready.";
+    });
+    var del = $("#e-delete");
+    if (del) del.addEventListener("click", function () {
+      $("#e-confirm").innerHTML = '<div class="confirm"><span class="danger">Delete ' + esc(s.name) + ' and its ' + sceneKeys().length + ' images from the repository? To keep it but take it off the site, use Hide instead.</span>' +
+        '<div class="row"><button class="btn" type="button" id="c-yes" style="border-color:var(--alert);color:var(--alert)">Delete style</button><button class="link" type="button" id="c-no">Keep it</button></div></div>';
+      $("#c-no").addEventListener("click", function () { $("#e-confirm").innerHTML = ""; });
+      $("#c-yes").addEventListener("click", function () {
+        styles = styles.filter(function (x) { return x.slug !== s.slug; });
+        Object.keys(pendingImgs).forEach(function (p) { if (p.indexOf("images/" + s.slug + "/") === 0) delete pendingImgs[p]; });
+        if (!isNew(s)) deletedSlugs.push(s.slug);
+        selected = null; renderList(); renderEditor();
+      });
+    });
+  }
+
+  /* ---------- list actions ---------- */
+  $("#list").addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    var li = b.closest(".item"), slug = li.dataset.slug, i = styles.findIndex(function (s) { return s.slug === slug; });
+    var act = b.dataset.act;
+    if (act === "up" && i > 0) { styles.splice(i - 1, 0, styles.splice(i, 1)[0]); }
+    if (act === "down" && i < styles.length - 1) { styles.splice(i + 1, 0, styles.splice(i, 1)[0]); }
+    if (act === "toggle") styles[i].hidden = !styles[i].hidden;
+    if (act === "edit") { selected = slug; draft = null; renderEditor(); }
+    renderList();
+    if (act === "up" || act === "down") { var btn = document.querySelector('.item[data-slug="' + slug + '"] [data-act="' + act + '"]'); if (btn && !btn.disabled) btn.focus(); }
+  });
+  $("#add-btn").addEventListener("click", function () {
+    selected = "__new"; draft = { name: "", family: "", description: "", imgs: {} };
+    renderList(); renderEditor(); $("#e-name").focus();
+  });
+  $("#discard-btn").addEventListener("click", function () {
+    styles = JSON.parse(JSON.stringify(base.styles)); pendingImgs = {}; deletedSlugs = []; selected = null; draft = null;
+    renderList(); renderEditor(); $("#pub-status").className = "status"; $("#pub-status").textContent = "Changes discarded.";
+  });
+
+  /* ---------- publish: one atomic commit ---------- */
+  $("#publish-btn").addEventListener("click", function () {
+    var btn = this, st = $("#pub-status"), summary = diff();
+    if (!summary.length) return;
+    if (!styles.some(function (s) { return !s.hidden; })) { st.className = "status bad"; st.textContent = "At least one style needs to stay live."; return; }
+    btn.disabled = true; st.className = "status"; st.textContent = "Checking for changes made elsewhere…";
+    var rp = repoPath(), headSha, treeSha;
+    gh(rp + "/contents/data.js?ref=" + encodeURIComponent(cfg.branch)).then(function (cur) {
+      if (cur.sha !== base.dataSha) throw new Error("The library changed on GitHub since you opened this page. Copy any text you need, reload the page and redo your changes.");
+      return gh(rp + "/git/ref/heads/" + encodeURIComponent(cfg.branch));
+    }).then(function (ref) {
+      headSha = ref.object.sha;
+      return gh(rp + "/git/commits/" + headSha);
+    }).then(function (commit) {
+      treeSha = commit.tree.sha;
+      return Promise.all(deletedSlugs.map(function (slug) {
+        return gh(rp + "/contents/images/" + encodeURIComponent(slug) + "?ref=" + encodeURIComponent(cfg.branch), { allow404: true })
+          .then(function (items) { return (items || []).filter(function (f) { return f.type === "file"; }).map(function (f) { return f.path; }); });
+      }));
+    }).then(function (delLists) {
+      var dels = [].concat.apply([], delLists), paths = Object.keys(pendingImgs), done = 0;
+      st.textContent = "Uploading " + paths.length + " image" + (paths.length === 1 ? "" : "s") + "…";
+      var seq = Promise.resolve(), entries = [];
+      paths.forEach(function (p) {
+        seq = seq.then(function () {
+          return gh(rp + "/git/blobs", { method: "POST", body: { content: pendingImgs[p].b64, encoding: "base64" } }).then(function (b) {
+            entries.push({ path: p, mode: "100644", type: "blob", sha: b.sha });
+            done++; st.textContent = "Uploading images… " + done + " / " + paths.length;
+          });
+        });
+      });
+      return seq.then(function () {
+        entries.push({ path: "data.js", mode: "100644", type: "blob", content: serialize(styles) });
+        dels.forEach(function (p) { entries.push({ path: p, mode: "100644", type: "blob", sha: null }); });
+        st.textContent = "Saving…";
+        return gh(rp + "/git/trees", { method: "POST", body: { base_tree: treeSha, tree: entries } });
+      });
+    }).then(function (tree) {
+      var msg = "Admin: " + summary.join(", ");
+      if (msg.length > 200) msg = msg.slice(0, 197) + "…";
+      return gh(rp + "/git/commits", { method: "POST", body: { message: msg, tree: tree.sha, parents: [headSha] } });
+    }).then(function (c) {
+      return gh(rp + "/git/refs/heads/" + encodeURIComponent(cfg.branch), { method: "PATCH", body: { sha: c.sha } });
+    }).then(function () {
+      return load();
+    }).then(function () {
+      renderList(); renderEditor();
+      st.className = "status ok"; st.textContent = "Published. The live site updates in about a minute. Refresh it with Cmd + Shift + R.";
+    }).catch(function (e) {
+      st.className = "status bad"; st.textContent = e.message; btn.disabled = false;
+    });
+  });
+
+  window.addEventListener("beforeunload", function (e) { if (base && diff().length) { e.preventDefault(); e.returnValue = ""; } });
+
+  /* ---------- connect ---------- */
+  function showWork() {
+    $("#connect-view").hidden = true; $("#work-view").hidden = false; $("#signout-btn").hidden = false;
+    $("#repo-label").textContent = cfg.owner + " / " + cfg.repo + " · " + cfg.branch;
+    renderList(); renderEditor();
+  }
+  function connect(c, remember) {
+    cfg = c; $("#connect-status").className = "status"; $("#connect-status").textContent = "Connecting…"; $("#connect-btn").disabled = true;
+    return load().then(function () {
+      if (remember) store(false, cfg); showWork();
+    }).catch(function (e) {
+      $("#connect-status").className = "status bad"; $("#connect-status").textContent = e.message; $("#connect-btn").disabled = false;
+      $("#connect-view").hidden = false; $("#work-view").hidden = true;
+    });
+  }
+  $("#connect-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    connect({ token: $("#f-token").value.trim(), owner: $("#f-owner").value.trim(), repo: $("#f-repo").value.trim(), branch: $("#f-branch").value.trim() || "main" }, $("#f-remember").checked);
+  });
+  $("#signout-btn").addEventListener("click", function () {
+    if (base && diff().length && !window.__forceSignout) { $("#pub-status").className = "status bad"; $("#pub-status").textContent = "Publish or discard your changes before disconnecting."; return; }
+    store(false, null); location.reload();
+  });
+
+  var saved = store(true);
+  if (saved && saved.token) { $("#f-owner").value = saved.owner; $("#f-repo").value = saved.repo; $("#f-branch").value = saved.branch; connect(saved, true); }
+})();
+</script>
+</body>
+</html>

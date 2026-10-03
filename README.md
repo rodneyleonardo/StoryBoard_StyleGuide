@@ -42,3 +42,14 @@ tools/add_images.py  converts real frames into images/
 
 - Index: hover links a style's name and frames; Scene toggle switches every thumbnail between Street and Breakfast; the menu opens a quick index with preview.
 - Style page: stage viewer, four frames, arrow keys to step, click or Full screen for a lightbox (swipe on phones), Compare puts the same frame next to any other style, Copy link for sharing, previous and next style.
+
+## Admin
+
+`admin.html` manages the library: add, edit, hide/show, reorder and delete styles. It isn't linked from the site and is marked noindex. Open it directly at `/admin.html`.
+
+1. Create a fine-grained GitHub token: Settings → Developer settings → Personal access tokens → Fine-grained tokens. Repository access: only this repo. Permissions: Contents, Read and write.
+2. Open `/admin.html`, paste the token, Connect.
+3. Make changes. Nothing goes live until you press **Publish to site**, which writes one commit (data.js plus images). The site updates in about a minute.
+
+New frames are resized to 1088 × 608 and converted to WebP in the browser. Use Chrome for adding frames.
+The token is stored only in that browser's local storage. Use Disconnect to clear it. Never commit a token to the repo.

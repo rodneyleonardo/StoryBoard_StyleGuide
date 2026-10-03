@@ -1,8 +1,7 @@
 /*
   Storyboard Styles: content.
-  Edit this file to rename, reorder, or re-describe a style.
-  Each style has four frames: two of the street scene (car), two of the breakfast scene (kid).
-  Image files live in images/<slug>/ and are named car-1, car-2, kid-1, kid-2.
+  Managed from admin.html. Each style has one frame per scene, stored in images/<slug>/<scene>-1.webp.
+  A style with hidden: true stays in the library but is not shown on the site.
 */
 window.STYLES = [
   {
