@@ -60,6 +60,7 @@
     }
     .input:focus, .textarea:focus { border-color: var(--ink); }
     .input.big { font: 300 clamp(24px, 2.2vw, 40px)/1.1 var(--serif); }
+    .masked { -webkit-text-security: disc; }
     .textarea { resize: vertical; min-height: 64px; }
     .row { display: flex; gap: 18px; flex-wrap: wrap; align-items: baseline; }
     .btn { border: 1px solid var(--ink); padding: 10px 18px; transition: background .25s, color .25s; }
@@ -169,7 +170,8 @@
         <p class="hint">Connect with a GitHub access token that can edit this repository. The token stays in this browser and is never saved to the site.</p>
         <div class="field">
           <label for="f-token">GitHub token</label>
-          <input class="input" id="f-token" type="password" placeholder="github_pat_…" required>
+          <div class="row" style="gap:12px;flex-wrap:nowrap"><input class="input masked" id="f-token" name="gh-access-code" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" data-1p-ignore data-lpignore="true" placeholder="github_pat_…" required><button class="link" type="button" id="f-show">Show</button></div>
+          <span class="muted" id="f-len"></span>
         </div>
         <div class="row">
           <div class="field" style="flex:1 1 160px"><label for="f-owner">Owner</label><input class="input" id="f-owner" value="rodneyleonardo" required></div>
@@ -570,8 +572,20 @@
       $("#connect-view").hidden = false; $("#work-view").hidden = true;
     });
   }
+  $("#f-show").addEventListener("click", function () {
+    var t = $("#f-token"), on = t.classList.toggle("masked"); this.textContent = on ? "Show" : "Hide";
+  });
+  $("#f-token").addEventListener("input", function () {
+    var v = this.value.trim(); $("#f-len").textContent = v ? v.length + " characters" : "";
+  });
   $("#connect-form").addEventListener("submit", function (e) {
     e.preventDefault();
+    var tok = $("#f-token").value.trim();
+    if (!/^(github_pat_|ghp_)/.test(tok) || tok.length < 36) {
+      $("#connect-status").className = "status bad";
+      $("#connect-status").textContent = "That isn't a GitHub token. A token starts with github_pat_ and is about 90 characters long. It is not your GitHub password.";
+      return;
+    }
     connect({ token: $("#f-token").value.trim(), owner: $("#f-owner").value.trim(), repo: $("#f-repo").value.trim(), branch: $("#f-branch").value.trim() || "main" }, $("#f-remember").checked);
   });
   $("#signout-btn").addEventListener("click", function () {
